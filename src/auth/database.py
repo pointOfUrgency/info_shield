@@ -7,6 +7,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData, Column, String, Integer, Table, JSON, ForeignKey
 from config import DB_PASS, DB_NAME, DB_HOST, DB_PORT, DB_USER
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+from sqlalchemy.orm import relationship
 
 
 class Base(DeclarativeBase):
@@ -15,9 +16,10 @@ class Base(DeclarativeBase):
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key=True)
-    username = Column(String, nullable=False)
+    username = Column(String, nullable=False, unique=True)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String(length=100), nullable=False)
+    posts = relationship("Comment", back_populates="author")
 
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
