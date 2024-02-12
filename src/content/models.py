@@ -16,14 +16,14 @@ class Content(Base):
     date_time = Column(TIMESTAMP, default=datetime.utcnow)
 
 
+
 class Comment(Base):
     __tablename__ = "comment"
 
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey("content.id"))
-    author_id: int = Column(Integer, ForeignKey("user.id"))
+    author_id = Column(Integer, ForeignKey('user.id'))
     text = Column(String, nullable=False)
     date_time = Column(TIMESTAMP, default=datetime.utcnow)
 
-    author = relationship("User", back_populates="posts")
 

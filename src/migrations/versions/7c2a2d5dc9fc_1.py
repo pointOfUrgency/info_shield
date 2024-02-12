@@ -1,8 +1,8 @@
 """1
 
-Revision ID: 5ff27dc67007
+Revision ID: 7c2a2d5dc9fc
 Revises: 
-Create Date: 2024-02-12 14:54:32.804257
+Create Date: 2024-02-12 17:27:32.078427
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '5ff27dc67007'
+revision: str = '7c2a2d5dc9fc'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -44,10 +44,8 @@ def upgrade() -> None:
     op.create_table('comment',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('post_id', sa.Integer(), nullable=True),
-    sa.Column('author_id', sa.Integer(), nullable=True),
     sa.Column('text', sa.String(), nullable=False),
     sa.Column('date_time', sa.TIMESTAMP(), nullable=True),
-    sa.ForeignKeyConstraint(['author_id'], ['user.id'], ),
     sa.ForeignKeyConstraint(['post_id'], ['content.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

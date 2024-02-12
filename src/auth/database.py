@@ -19,8 +19,6 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     username = Column(String, nullable=False, unique=True)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String(length=100), nullable=False)
-    posts = relationship("Comment", back_populates="author")
-
     
 
 engine = create_async_engine(DATABASE_URL)
