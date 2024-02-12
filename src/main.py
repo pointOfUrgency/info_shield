@@ -66,7 +66,7 @@ def get_comments(db: Session = Depends(get_db)):
 
 
 @app.post("/content", response_model=schemas.GetContent)
-def create_content(content=schemas.createContent, db: Session = Depends(get_db)):
+def create_content(content: schemas.createContent = schemas.createContent, db: Session = Depends(get_db)):
     db_content = CRUD.get_content(db, content_id=content.id)
     if db_content:
         raise HTTPException(status_code=400, detail="This post already exists")

@@ -20,7 +20,7 @@ def get_comments(db:Session):
 
 
 def create_content(db: Session, content: schemas.createContent):
-    db_content = models.Content(title=content.title, body=content.body, author=content.author)
+    db_content = models.Content(id=content.id, title=content.title, body=content.body, author=content.author)
     db.add(db_content)
     db.commit()
     db.refresh(db_content)

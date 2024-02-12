@@ -2,7 +2,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP
 from sqlalchemy.orm import relationship
 from content.database import Base
 from datetime import datetime
-from auth.database import User
+
+
 
 class Content(Base):
     __tablename__ = "content"
@@ -20,7 +21,9 @@ class Comment(Base):
 
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey("content.id"))
-    author_id = Column(Integer, ForeignKey(User.id))
-    author = relationship("User", back_populates="posts")
+    author_id: int = Column(Integer, ForeignKey("user.id"))
     text = Column(String, nullable=False)
     date_time = Column(TIMESTAMP, default=datetime.utcnow)
+
+    author = relationship("User", back_populates="posts")
+
