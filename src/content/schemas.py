@@ -10,7 +10,6 @@ class GetContent(BaseModel):
 
 
 class createContent(BaseModel):
-    id: int
     title: str
     body: str
     author: str
