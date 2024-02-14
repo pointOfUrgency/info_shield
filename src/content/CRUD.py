@@ -19,8 +19,8 @@ def get_comments(db:Session):
     return db.query(models.Comment).all()
 
 
-def create_content(db: Session, content: schemas.createContent):
-    db_content = models.Content(id=content.id, title=content.title, body=content.body, author=content.author)
+def create_content(db: Session, content: schemas.createContent = schemas.createContent):
+    db_content = models.Content(id=content.id, title=content.title, body=content.body, photo_name=content.photo_name, author=content.author)
     db.add(db_content)
     db.commit()
     db.refresh(db_content)

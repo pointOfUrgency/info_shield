@@ -3,15 +3,16 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+# from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData, Column, String, Integer, Table, JSON, ForeignKey
 from config import DB_PASS, DB_NAME, DB_HOST, DB_PORT, DB_USER
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 from sqlalchemy.orm import relationship
+from content.database import Base
 
 
-class Base(DeclarativeBase):
-    pass
+# class Base(DeclarativeBase):
+#     pass
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -19,6 +20,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     username = Column(String, nullable=False, unique=True)
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String(length=100), nullable=False)
+
+    posts = relationship("Comment", back_populates="author")
     
 
 engine = create_async_engine(DATABASE_URL)
