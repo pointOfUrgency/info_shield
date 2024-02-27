@@ -50,24 +50,18 @@ def get_contents(db: Session = Depends(get_db)):
     contents = CRUD.get_contents(db)
     return contents
 
+current_user = fastapi_users.current_user(active=True, superuser=True)
+current_user2 = fastapi_users.current_user(active=True)
 
-@app.get("/comment/{comment_id}", response_model=schemas.GetComment)
-def get_comment(comment_id: int, db: Session = Depends(get_db)):
-    comment = CRUD.get_comment(db, comment_id=comment_id)
-    if comment is None:
-        raise HTTPException(status_code=400, detail="This comment does not exist")
-    return comment
-
-
-@app.get("/comments", response_model=list[schemas.GetComment])
-def get_comments(db: Session = Depends(get_db)):
-    comments = CRUD.get_comments(db)
-    return comments
+@app.get("/user")
+def get_current_user(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    return {"user": user.id}
 
 
 @app.post("/content", response_model=schemas.GetContent)
-def create_content(content: schemas.createContent = schemas.createContent, db: Session = Depends(get_db)):
+def create_content(content: schemas.createContent = schemas.createContent, db: Session = Depends(get_db), user: User = Depends(current_user)):
     db_content = CRUD.get_content(db, content_id=content.id)
     if db_content:
         raise HTTPException(status_code=400, detail="This post already exists")
     return CRUD.create_content(db=db, content=content)
+

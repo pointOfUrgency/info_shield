@@ -10,24 +10,13 @@ class Content(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    photo_name = Column(String, nullable=True)
     body = Column(String, nullable=False)
-    author = Column(String, nullable=True)
+    author = Column(String, nullable=False)
     date_time = Column(TIMESTAMP, default=datetime.utcnow)
 
-    comment_id = relationship("Comment", back_populates="post")
+    # for_post = relationship("Comment", back_populates="post")
 
+    class Config:
+        orm_mode = True
 
-
-class Comment(Base):
-    __tablename__ = "comment"
-
-    id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey("content.id"))
-    author_id = Column(Integer, ForeignKey('user.id'))
-    text = Column(String, nullable=False)
-    date_time = Column(TIMESTAMP, default=datetime.utcnow)
-    
-    author = relationship("User", back_populates="posts")
-    post = relationship("Content", back_populates="comment_id")
 
