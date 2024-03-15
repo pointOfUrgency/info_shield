@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi_users import FastAPIUsers
-
+from fastapi.responses import ORJSONResponse
 from auth.database import User
 from auth.manager import get_user_manager
 from auth.authBackend import auth_backend
@@ -11,12 +11,12 @@ from content import schemas, CRUD
 from fastapi import Depends, FastAPI, HTTPException
 
 
-app = FastAPI()
-
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
-    [auth_backend],
+    [auth_backend]
 )
+app = FastAPI(default_response_class=ORJSONResponse)
+
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth/jwt",
